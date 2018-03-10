@@ -23,7 +23,7 @@ public class PokemonServiceImpl implements PokemonService {
 
     @Override
     public List<Pokemon> findPokemons(PokemonSearch pokemonSearch) {
-        return this.pokemonRepository.findAll();
+        return this.pokemonRepository.findPokemonsBySearchFilter(pokemonSearch);
     }
 
     @Override
