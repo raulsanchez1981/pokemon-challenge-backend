@@ -79,4 +79,17 @@ public class PokemonControllerTest {
         pokemonController.updatePokemon(pokemon);
     }
 
+    @Test
+    public void testDeletePokemon() {
+        Mockito.when(pokemonService.findPokemonById("")).thenReturn(this.pokemon);
+        Mockito.doNothing().when(pokemonService).deletePokemon("");
+        pokemonController.deletePokemon("");
+    }
+
+    @Test(expected = ChallengeControllerException.class)
+    public void testDeletePokemonException() {
+        Mockito.when(pokemonService.findPokemonById("")).thenReturn(this.pokemon);
+        Mockito.doThrow(new ChallengeServiceException("error", new Throwable())).when(pokemonService).deletePokemon("");
+        pokemonController.deletePokemon("");
+    }
 }

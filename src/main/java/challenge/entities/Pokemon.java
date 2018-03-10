@@ -2,17 +2,28 @@ package challenge.entities;
 
 import challenge.enums.Type;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
+@CompoundIndexes({
+        @CompoundIndex(name = "index_name", def = "{'name' : 1}", unique = true)
+})
 @Document(collection = "pokemon")
 public class Pokemon {
 
     @Id
     private String id;
+
+    @NotNull(message = "The 'Name' must be filled")
     private String name;
+
+    @NotNull(message = "The 'Description' must be filled")
     private String description;
+
     private List<Type> types;
     private String image;
     private boolean favourite;

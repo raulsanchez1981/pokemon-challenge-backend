@@ -5,9 +5,7 @@ import org.springframework.http.HttpStatus;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by rsanchpa on 29/09/2017.
- */
+
 public class ApiError {
     private HttpStatus status;
     private String message;

@@ -8,4 +8,7 @@ import java.util.List;
 public interface CustomPokemonRepository {
 
     List<Pokemon> findPokemonsBySearchFilter(PokemonSearch pokemonSearch);
+
+    void updatePokemon(Pokemon pokemon);
+
 }

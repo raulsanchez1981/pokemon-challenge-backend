@@ -1,9 +1,6 @@
 package challenge.exception.types;
 
 
-/**
- * Created by rsanchpa on 16/09/2017.
- */
 
 public abstract class BaseException extends RuntimeException {
     private boolean traceException;
@@ -38,7 +35,7 @@ public abstract class BaseException extends RuntimeException {
     }
 
     private static boolean traceException(Throwable cause) {
-        return cause instanceof BaseException?((BaseException)BaseException.class.cast(cause)).isTraceException():true;
+        return cause instanceof BaseException ?((BaseException)BaseException.class.cast(cause)).isTraceException():true;
     }
 
     public boolean isTraceException() {

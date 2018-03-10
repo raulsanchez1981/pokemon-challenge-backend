@@ -5,15 +5,12 @@ package challenge.utils;
  */
 public final class ErrorCodes {
 
-    public static final String DUPLICATE_CHARACTER = "duplicatecharacter";
-    public static final String CHARACTER_NOT_FOUND = "characternotfound";
-    public static final String UPDATE_ERROR = "updatecharacter";
-    public static final String DELETE_ERROR = "deletecharacter";
-    public static final String NOT_CREATOR_UPD = "notcreatorupd";
-    public static final String NOT_CREATOR_DEL = "notcreatordel";
+    public static final String DUPLICATE_POKEMON = "duplicatepokemon";
+    public static final String POKEMON_NOT_FOUND = "pokemonnotfound";
+    public static final String UPDATE_ERROR = "updatepokemon";
+    public static final String DELETE_ERROR = "deletepokemon";
+    public static final String FIND_POKEMON_ERROR = "findpokemon";
+    public static final String FIND_TYPES_ERROR = "findtypes";
 
-    public static final String USER_NOT_EXIST = "usernotexist";
-    public static final String USER_NOT_ACTIVE = "usernotactive";
-    public static final String USER_NOT_ADMIN = "usernotadmin";
 
 }

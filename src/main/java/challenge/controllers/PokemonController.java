@@ -1,6 +1,8 @@
 package challenge.controllers;
 
 import challenge.entities.Pokemon;
+import challenge.exception.types.ChallengeControllerException;
+import challenge.exception.types.ChallengeServiceException;
 import challenge.search.PokemonSearch;
 import challenge.services.PokemonService;
 import io.swagger.annotations.ApiOperation;
@@ -48,7 +50,16 @@ public class PokemonController {
             @ApiResponse(code = 500, message = "Internal Server Error")})
     @RequestMapping(method = RequestMethod.POST, value = "/search")
     public List<Pokemon> findPokemons(@RequestBody PokemonSearch pokemonSearch) {
-        return this.pokemonService.findPokemons(pokemonSearch);
+        List<Pokemon> listPokemons;
+        try {
+            listPokemons = this.pokemonService.findPokemons(pokemonSearch);
+            if (listPokemons.isEmpty()) {
+                listPokemons = null;
+            }
+        } catch (ChallengeServiceException e) {
+            throw new ChallengeControllerException(e.getMessage());
+        }
+        return listPokemons;
     }
 
     @ApiOperation(value = "Add a new Pokemon to the Collection",
@@ -68,7 +79,11 @@ public class PokemonController {
             @ApiResponse(code = 500, message = "Internal Server Error")})
     @RequestMapping(method = RequestMethod.POST, value = "")
     public Pokemon savePokemon(@RequestBody Pokemon pokemon) {
-        return this.pokemonService.savePokemon(pokemon);
+        try {
+            return this.pokemonService.savePokemon(pokemon);
+        } catch (ChallengeServiceException e) {
+            throw new ChallengeControllerException(e.getMessage());
+        }
     }
 
     @ApiOperation(value = "Update a Pokemon from the Collection",
@@ -84,7 +99,11 @@ public class PokemonController {
             @ApiResponse(code = 500, message = "Internal Server Error")})
     @RequestMapping(method = RequestMethod.PUT, value = "")
     public Pokemon updatePokemon(@RequestBody Pokemon pokemon) {
-        return this.pokemonService.updatePokemon(pokemon);
+        try {
+            return this.pokemonService.updatePokemon(pokemon);
+        } catch (ChallengeServiceException e) {
+            throw new ChallengeControllerException(e.getMessage());
+        }
     }
 
     @ApiOperation(value = "Delete a Pokemon from the Collection",
@@ -100,7 +119,11 @@ public class PokemonController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @RequestMapping(method=RequestMethod.DELETE, value="/{id}")
     public void deletePokemon(@PathVariable String id)  {
-        this.pokemonService.deletePokemon(id);
+        try {
+            this.pokemonService.deletePokemon(id);
+        } catch (ChallengeServiceException e) {
+            throw new ChallengeControllerException(e.getMessage());
+        }
     }
 
 }

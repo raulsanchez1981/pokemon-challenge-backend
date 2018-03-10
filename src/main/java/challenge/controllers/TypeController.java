@@ -1,5 +1,7 @@
 package challenge.controllers;
 
+import challenge.exception.types.ChallengeControllerException;
+import challenge.exception.types.ChallengeServiceException;
 import challenge.services.TypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +19,11 @@ public class TypeController {
 
     @RequestMapping(method= RequestMethod.GET, value="/search")
     public List<String> findPowers()  {
-        return this.typeService.obtainAllTypes();
+        try {
+            return this.typeService.obtainAllTypes();
+        } catch (ChallengeServiceException e) {
+            throw new ChallengeControllerException(e.getMessage());
+        }
     }
 
 }

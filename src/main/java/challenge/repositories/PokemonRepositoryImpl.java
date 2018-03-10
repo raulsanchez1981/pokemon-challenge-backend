@@ -2,11 +2,15 @@ package challenge.repositories;
 
 import challenge.entities.Pokemon;
 import challenge.search.PokemonSearch;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.MongoRegexCreator;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.data.repository.query.parser.Part;
 import org.springframework.util.StringUtils;
 
@@ -30,6 +34,13 @@ public class PokemonRepositoryImpl implements CustomPokemonRepository {
         }
         List<Pokemon> list = this.mongoTemplate.find(query, Pokemon.class);
         return list;
+    }
+
+    @Override
+    public void updatePokemon(Pokemon pokemon) {
+        Document pokemonDocument = (Document) mongoTemplate.getConverter().convertToMongoType(pokemon);
+        Update setUpdate = Update.fromDocument(new Document("$set", pokemonDocument));
+        mongoTemplate.updateFirst(new Query(Criteria.where("_id").is(pokemon.getId())), setUpdate , Pokemon.class);
     }
 
 
