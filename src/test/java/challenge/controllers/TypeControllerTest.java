@@ -1,11 +1,7 @@
 package challenge.controllers;
 
-import challenge.entities.Pokemon;
-import challenge.enums.Type;
 import challenge.exception.types.ChallengeControllerException;
 import challenge.exception.types.ChallengeServiceException;
-import challenge.search.PokemonSearch;
-import challenge.services.PokemonService;
 import challenge.services.TypeService;
 import org.junit.Assert;
 import org.junit.Before;

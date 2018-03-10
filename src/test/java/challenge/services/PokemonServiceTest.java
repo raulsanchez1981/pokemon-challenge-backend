@@ -1,8 +1,6 @@
 package challenge.services;
 
-import challenge.controllers.PokemonController;
 import challenge.entities.Pokemon;
-import challenge.exception.types.ChallengeControllerException;
 import challenge.exception.types.ChallengeDataAccessException;
 import challenge.exception.types.ChallengeServiceException;
 import challenge.repositories.PokemonRepository;
