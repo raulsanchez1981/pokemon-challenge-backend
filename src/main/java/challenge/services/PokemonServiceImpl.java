@@ -1,6 +1,7 @@
 package challenge.services;
 
 import challenge.entities.Pokemon;
+import challenge.exception.types.ChallengeControllerException;
 import challenge.exception.types.ChallengeServiceException;
 import challenge.repositories.PokemonRepository;
 import challenge.search.PokemonSearch;
@@ -12,6 +13,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -26,13 +28,21 @@ public class PokemonServiceImpl implements PokemonService {
 
     @Override
     public Pokemon findPokemonById(String id) {
-        Optional<Pokemon> pokemon = this.pokemonRepository.findById(id);
-        return pokemon.get();
+        try {
+            Optional<Pokemon> pokemon = this.pokemonRepository.findById(id);
+            return pokemon.get();
+        } catch (NoSuchElementException e) {
+            throw new ChallengeServiceException(errorMessages.getProperty(ErrorCodes.POKEMON_NOT_FOUND));
+        }
     }
 
     @Override
     public List<Pokemon> findPokemons(PokemonSearch pokemonSearch) {
-        return this.pokemonRepository.findPokemonsBySearchFilter(pokemonSearch);
+        try {
+            return this.pokemonRepository.findPokemonsBySearchFilter(pokemonSearch);
+        } catch (ChallengeControllerException e) {
+            throw new ChallengeServiceException(e.getCause().getMessage());
+        }
     }
 
     @Override
@@ -58,11 +68,11 @@ public class PokemonServiceImpl implements PokemonService {
     @Override
     public void deletePokemon(String id) {
         Pokemon pokemon = this.findPokemonById(id);
-        if (null == pokemon) {
-            throw new ChallengeServiceException(errorMessages.getProperty(ErrorCodes.POKEMON_NOT_FOUND));
-        }
+//        if (null == pokemon) {
+//            throw new ChallengeServiceException(errorMessages.getProperty(ErrorCodes.POKEMON_NOT_FOUND));
+//        }
         try {
-            this.pokemonRepository.delete(id);
+            this.pokemonRepository.delete(pokemon);
         } catch (Exception e) {
             throw new ChallengeServiceException(errorMessages.getProperty(ErrorCodes.DELETE_ERROR));
         }

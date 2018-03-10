@@ -1,10 +1,14 @@
-package challenge.controllers;
+package challenge.services;
 
+import challenge.controllers.PokemonController;
 import challenge.entities.Pokemon;
 import challenge.exception.types.ChallengeControllerException;
+import challenge.exception.types.ChallengeDataAccessException;
 import challenge.exception.types.ChallengeServiceException;
+import challenge.repositories.PokemonRepository;
 import challenge.search.PokemonSearch;
-import challenge.services.PokemonService;
+import challenge.utils.ErrorCodes;
+import challenge.utils.ErrorMessages;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,9 +19,10 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
-public class PokemonControllerTest {
+public class PokemonServiceTest {
 
     private List<Pokemon> emptyList;
     private Pokemon pokemon;
@@ -25,10 +30,13 @@ public class PokemonControllerTest {
 
 
     @Mock
-    private PokemonService pokemonService;
+    PokemonRepository pokemonRepository;
+
+    @Mock
+    ErrorMessages errorMessages;
 
     @InjectMocks
-    private PokemonController pokemonController;
+    private PokemonServiceImpl pokemonService;
 
 
     @Before
@@ -41,55 +49,57 @@ public class PokemonControllerTest {
 
     @Test
     public void testGetAllPokemons() {
-        Mockito.when(pokemonService.findPokemons(this.pokemonSearch)).thenReturn(this.emptyList);
-        List<Pokemon> result = this.pokemonController.findPokemons(pokemonSearch);
-        Assert.assertEquals(result, null);
+        Mockito.when(pokemonRepository.findPokemonsBySearchFilter(this.pokemonSearch)).thenReturn(this.emptyList);
+        List<Pokemon> result = this.pokemonService.findPokemons(pokemonSearch);
+        Assert.assertEquals(result, this.emptyList);
     }
 
-    @Test(expected = ChallengeControllerException.class)
+    @Test(expected = ChallengeServiceException.class)
     public void testGetAllPokemonsException() {
-        Mockito.when(this.pokemonService.findPokemons(pokemonSearch)).thenThrow(new ChallengeServiceException("error", new Throwable()));
-        this.pokemonController.findPokemons(pokemonSearch);
+        Mockito.when(this.pokemonRepository.findPokemonsBySearchFilter(pokemonSearch)).thenThrow(new ChallengeServiceException("error", new Throwable()));
+        this.pokemonService.findPokemons(pokemonSearch);
     }
 
 
     @Test
     public void testCreatePokemon() {
-        Mockito.when(pokemonService.savePokemon(pokemon)).thenReturn(this.pokemon);
-        Pokemon result = pokemonController.savePokemon(pokemon);
+        Mockito.when(pokemonRepository.save(pokemon)).thenReturn(this.pokemon);
+        Pokemon result = pokemonService.savePokemon(pokemon);
         Assert.assertEquals(result, this.pokemon);
     }
 
-    @Test(expected = ChallengeControllerException.class)
+    @Test(expected = ChallengeServiceException.class)
     public void testCreatePokemonException() {
-        Mockito.when(pokemonService.savePokemon(pokemon)).thenThrow(new ChallengeServiceException("error", new Throwable()));
-        this.pokemonController.savePokemon(pokemon);
+        Mockito.when(pokemonRepository.save(pokemon)).thenThrow(new ChallengeServiceException("error", new Throwable()));
+        this.pokemonService.savePokemon(pokemon);
     }
 
     @Test
     public void testUpdatePokemon() {
-        Mockito.when(pokemonService.updatePokemon(pokemon)).thenReturn(this.pokemon);
-        Pokemon result = pokemonController.updatePokemon(pokemon);
+        Mockito.doNothing().when(pokemonRepository).updatePokemon(pokemon);
+        Mockito.when(errorMessages.getProperty(ErrorCodes.UPDATE_ERROR)).thenReturn(null);
+        Mockito.when(pokemonRepository.findById(null)).thenReturn(Optional.of(this.pokemon));
+        Pokemon result = pokemonService.updatePokemon(pokemon);
         Assert.assertEquals(result, this.pokemon);
     }
 
-    @Test(expected = ChallengeControllerException.class)
+    @Test(expected = ChallengeServiceException.class)
     public void testUpdatePokemonException() {
-        Mockito.when(pokemonService.updatePokemon(pokemon)).thenThrow(new ChallengeServiceException("error", new Throwable()));
-        pokemonController.updatePokemon(pokemon);
+        Mockito.doThrow(new ChallengeDataAccessException("error", new Throwable())).when(pokemonRepository).updatePokemon(pokemon);
+        pokemonService.updatePokemon(pokemon);
     }
 
     @Test
     public void testDeletePokemon() {
-        Mockito.when(pokemonService.findPokemonById("")).thenReturn(this.pokemon);
-        Mockito.doNothing().when(pokemonService).deletePokemon("");
-        pokemonController.deletePokemon("");
+        Mockito.when(pokemonRepository.findById("")).thenReturn(Optional.of(this.pokemon));
+        Mockito.doNothing().when(pokemonRepository).delete(this.pokemon);
+        pokemonService.deletePokemon("");
     }
 
-    @Test(expected = ChallengeControllerException.class)
+    @Test(expected = ChallengeServiceException.class)
     public void testDeletePokemonException() {
-        Mockito.when(pokemonService.findPokemonById("")).thenReturn(this.pokemon);
-        Mockito.doThrow(new ChallengeServiceException("error", new Throwable())).when(pokemonService).deletePokemon("");
-        pokemonController.deletePokemon("");
+        Mockito.when(pokemonRepository.findById(null)).thenReturn(Optional.of(this.pokemon));
+        Mockito.doThrow(new ChallengeServiceException("error", new Throwable())).when(pokemonRepository).delete(this.pokemon);
+        pokemonService.deletePokemon("");
     }
 }

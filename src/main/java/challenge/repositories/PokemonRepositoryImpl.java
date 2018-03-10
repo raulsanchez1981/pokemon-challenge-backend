@@ -1,26 +1,34 @@
 package challenge.repositories;
 
 import challenge.entities.Pokemon;
+import challenge.exception.types.ChallengeControlAcessException;
 import challenge.search.PokemonSearch;
+import challenge.utils.ErrorCodes;
+import challenge.utils.ErrorMessages;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.MongoRegexCreator;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.data.repository.query.parser.Part;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
 
+@EnableConfigurationProperties
 public class PokemonRepositoryImpl implements CustomPokemonRepository {
 
     @Autowired
     MongoTemplate mongoTemplate;
 
+    @Autowired
+    ErrorMessages errorMessages;
 
     @Override
     public List<Pokemon> findPokemonsBySearchFilter(PokemonSearch pokemonSearch) {
@@ -32,8 +40,13 @@ public class PokemonRepositoryImpl implements CustomPokemonRepository {
         if (null != pokemonSearch.getFavourite()) {
             query.addCriteria(Criteria.where("favourite").is(pokemonSearch.getFavourite()));
         }
-        List<Pokemon> list = this.mongoTemplate.find(query, Pokemon.class);
-        return list;
+        try {
+            List<Pokemon> list = this.mongoTemplate.find(query, Pokemon.class);
+            return list;
+        } catch (Exception e) {
+            throw new ChallengeControlAcessException(errorMessages.getProperty(ErrorCodes.FIND_POKEMON_ERROR));
+
+        }
     }
 
     @Override
