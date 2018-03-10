@@ -27,7 +27,7 @@ public class Pokemon {
     private List<Type> types;
     private String image;
     private boolean favourite;
-    private Pokemon evolution;
+    private String evolution;
 
     public String getId() {
         return id;
@@ -61,11 +61,11 @@ public class Pokemon {
         this.types = types;
     }
 
-    public Pokemon getEvolution() {
+    public String getEvolution() {
         return evolution;
     }
 
-    public void setEvolution(Pokemon evolution) {
+    public void setEvolution(String evolution) {
         this.evolution = evolution;
     }
 
