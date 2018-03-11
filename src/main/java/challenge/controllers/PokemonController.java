@@ -102,7 +102,8 @@ public class PokemonController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
     @RequestMapping(method = RequestMethod.PUT, value = "")
-    public Pokemon updatePokemon(@RequestBody Pokemon pokemon) {
+    public Pokemon updatePokemon(@Valid @RequestBody Pokemon pokemon, BindingResult bindingResult) {
+        buildErrorMessages(bindingResult);
         try {
             return this.pokemonService.updatePokemon(pokemon);
         } catch (ChallengeServiceException e) {
