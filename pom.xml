@@ -13,6 +13,12 @@
         <version>2.0.0.RELEASE</version>
     </parent>
 
+
+    <properties>
+        <java.version>1.8</java.version>
+        <docker.image.prefix>raulsanchez1981</docker.image.prefix>
+    </properties>
+
     <dependencies>
         <!--SPRING BEGIN -->
         <dependency>
@@ -94,9 +100,6 @@
         <!--CUCUMBER END -->
     </dependencies>
 
-    <properties>
-        <java.version>1.8</java.version>
-    </properties>
 
     <build>
         <plugins>
@@ -114,6 +117,14 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>1.4.0</version>
+                <configuration>
+                    <repository>${docker.image.prefix}/${project.artifactId}</repository>
+                </configuration>
             </plugin>
         </plugins>
     </build>

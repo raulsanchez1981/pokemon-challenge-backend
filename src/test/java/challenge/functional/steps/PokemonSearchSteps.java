@@ -1,6 +1,7 @@
 package challenge.functional.steps;
 
 import challenge.Application;
+import challenge.controllers.PokemonController;
 import challenge.entities.Pokemon;
 import challenge.repositories.PokemonRepository;
 import challenge.search.PokemonSearch;
@@ -18,9 +19,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by rsanchpa on 17/09/2017.
- */
 @WebAppConfiguration
 @ContextConfiguration(classes= Application.class)
 @SpringBootTest
@@ -29,7 +27,7 @@ public class PokemonSearchSteps {
     private List<Pokemon> pokemonList = new ArrayList<>();
 
     @Autowired
-    private PokemonService pokemonService;
+    private PokemonController pokemonController;
 
     @Autowired
     private PokemonRepository pokemonRepository;
@@ -42,20 +40,20 @@ public class PokemonSearchSteps {
 
     @When("^the user requests all the pokemons from the system$")
     public void searchPokemons() {
-        this.pokemonList = this.pokemonService.findPokemons(new PokemonSearch());
+        this.pokemonList = this.pokemonController.findPokemons(new PokemonSearch());
     }
 
     @When("^the user requests all the pokemons from the system witch contains '(.+)' in the name field$")
     public void searchPokemons(String searchString) {
         PokemonSearch pokemonSearch = new PokemonSearch();
         pokemonSearch.setName(searchString);
-        this.pokemonList = this.pokemonService.findPokemons(pokemonSearch);
+        this.pokemonList = this.pokemonController.findPokemons(pokemonSearch);
     }
     @When("^the user requests all the favourites pokemons from the system$")
     public void searchFavouritesPokemons() {
         PokemonSearch pokemonSearch = new PokemonSearch();
         pokemonSearch.setFavourite(true);
-        this.pokemonList = this.pokemonService.findPokemons(pokemonSearch);
+        this.pokemonList = this.pokemonController.findPokemons(pokemonSearch);
     }
 
     @Then("^it should be returned this list of pokemons with '(.+)' elements$")
@@ -63,22 +61,9 @@ public class PokemonSearchSteps {
         Assert.assertTrue(count == pokemonList.size());
     }
 
-//    @Then("^it should be returned this list of issues with not empty id$")
-//    public void checkIdFoundIssues() {
-//        List<Issue> listResult = this.listIssues.stream().filter(p -> (!p.getId().equals(null))).collect(Collectors.toList());
-//        Assert.assertEquals(listIssues.size(), listResult.size());
-//    }
-//
-//    @Then("^it should be returned this list of issues with all the elemets unlocked$")
-//    public void checkFoundIssues() {
-//        List<Issue> listResult = this.listIssues.stream().filter(p -> (p.getLocked().equals(false))).collect(Collectors.toList());
-//        Assert.assertEquals(listIssues.size(), listResult.size());
-//    }
-
     @After
     public void tearDown() {
         this.pokemonRepository.deleteAll();
     }
-
 
 }
