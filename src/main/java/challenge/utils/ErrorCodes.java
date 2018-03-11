@@ -13,5 +13,10 @@ public final class ErrorCodes {
     public static final String FIND_TYPES_ERROR = "findtypes";
     public static final String MAX_FAVOURITE = "maxfavourite";
 
+    public static final String NAME_LENGTH = "namelength";
+    public static final String DESCRIPTION_LENGTH = "descriptionlength";
+    public static final String NAME_ONE_WORD = "nameword";
+    public static final String TYPES_NUMBER = "typesnumber";
+
 
 }

@@ -7,6 +7,7 @@ import challenge.repositories.PokemonRepository;
 import challenge.search.PokemonSearch;
 import challenge.utils.ErrorCodes;
 import challenge.utils.ErrorMessages;
+import challenge.validations.ValidationPokemon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.dao.DuplicateKeyException;
@@ -46,6 +47,7 @@ public class PokemonServiceImpl implements PokemonService {
     }
 
     @Override
+    @ValidationPokemon
     public Pokemon savePokemon(Pokemon pokemon) {
         try {
             pokemon.setId(null);
@@ -56,6 +58,7 @@ public class PokemonServiceImpl implements PokemonService {
     }
 
     @Override
+    @ValidationPokemon
     public Pokemon updatePokemon(Pokemon pokemon) {
         try {
             this.pokemonRepository.updatePokemon(pokemon);

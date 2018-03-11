@@ -2,6 +2,8 @@ package challenge.exception.handler;
 
 import challenge.exception.types.ChallengeControlAcessException;
 import challenge.exception.types.ChallengeControllerException;
+import challenge.exception.types.ValidationDataException;
+import challenge.validations.ValidationPokemon;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -170,12 +172,12 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
 
-    @ExceptionHandler({ ChallengeControlAcessException.class })
-    public ResponseEntity<Object> handleControAcessException(final ChallengeControlAcessException ex, final WebRequest request) {
+    @ExceptionHandler({ ValidationDataException.class })
+    public ResponseEntity<Object> handleValidationAcessException(final ValidationDataException ex, final WebRequest request) {
         logger.info(ex.getClass().getName());
         logger.error("error", ex);
         //
-        final ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED, ex.getLocalizedMessage(), ex.getLocalizedMessage());
+        final ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), ex.getLocalizedMessage());
         return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 

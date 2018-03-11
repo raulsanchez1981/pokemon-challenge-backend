@@ -56,14 +56,14 @@ public class PokemonControllerTest {
     @Test
     public void testCreatePokemon() {
         Mockito.when(pokemonService.savePokemon(pokemon)).thenReturn(this.pokemon);
-        Pokemon result = pokemonController.savePokemon(pokemon);
+        Pokemon result = pokemonController.savePokemon(pokemon, null);
         Assert.assertEquals(result, this.pokemon);
     }
 
     @Test(expected = ChallengeControllerException.class)
     public void testCreatePokemonException() {
         Mockito.when(pokemonService.savePokemon(pokemon)).thenThrow(new ChallengeServiceException("error", new Throwable()));
-        this.pokemonController.savePokemon(pokemon);
+        this.pokemonController.savePokemon(pokemon, null);
     }
 
     @Test

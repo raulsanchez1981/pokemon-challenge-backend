@@ -10,8 +10,11 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -78,7 +81,8 @@ public class PokemonController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
     @RequestMapping(method = RequestMethod.POST, value = "")
-    public Pokemon savePokemon(@RequestBody Pokemon pokemon) {
+    public Pokemon savePokemon(@Valid @RequestBody Pokemon pokemon, BindingResult bindingResult) {
+        buildErrorMessages(bindingResult);
         try {
             return this.pokemonService.savePokemon(pokemon);
         } catch (ChallengeServiceException e) {
@@ -136,7 +140,7 @@ public class PokemonController {
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
-    @RequestMapping(method = RequestMethod.PUT, value = "/favourite/{id}")
+    @RequestMapping(method = RequestMethod.PUT, value = "/favourite/make/{id}")
     public Pokemon makePokemonFavourite(@PathVariable String id) {
         try {
             return this.pokemonService.makePokemonFavourite(id);
@@ -145,7 +149,7 @@ public class PokemonController {
         }
     }
 
-    @ApiOperation(value = "Unmake Fvourite a Pokemon from the Collection",
+    @ApiOperation(value = "Unmake Favourite a Pokemon from the Collection",
             notes = "The following validations are applied:"
                     + "\n"
                     + "\n- **Id** must be filled<br>")
@@ -155,7 +159,7 @@ public class PokemonController {
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Internal Server Error")})
-    @RequestMapping(method = RequestMethod.PUT, value = "/favourite/{id}")
+    @RequestMapping(method = RequestMethod.PUT, value = "/favourite/unmake/{id}")
     public Pokemon unMakePokemonFavourite(@PathVariable String id) {
         try {
             return this.pokemonService.unMakePokemonFavourite(id);
@@ -164,4 +168,15 @@ public class PokemonController {
         }
     }
 
+
+    private void buildErrorMessages(BindingResult bindingResult) {
+        final StringBuilder builder = new StringBuilder();
+        if (bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().stream().forEach(item -> {
+                builder.append(item.getDefaultMessage());
+                builder.append(" <br> ");
+            });
+            throw new ChallengeControllerException(builder.toString());
+        }
+    }
 }
