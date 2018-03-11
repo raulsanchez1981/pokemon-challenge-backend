@@ -103,10 +103,20 @@
         </dependency>
         <!--CUCUMBER END -->
 
+        <!--VALIDATIONS BEGIN -->
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
         </dependency>
+        <!--VALIDATIONS BEGIN -->
+
+        <!--UTILS BEGIN -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.6</version>
+        </dependency>
+        <!--UTILS BEGIN -->
     </dependencies>
 
 

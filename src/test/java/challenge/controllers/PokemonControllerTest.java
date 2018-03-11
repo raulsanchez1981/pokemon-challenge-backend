@@ -45,7 +45,7 @@ public class PokemonControllerTest {
         this.pokemon.setId("sfdsfdsfdsfdfds");
         this.pokemon.setName("Named");
         this.pokemon.setDescription("lkfdlksjfkljsdflkjsldkfjalksdjflkjdlñkjasdklfjlñkjsdflkjasflkajdfklfja");
-        this.pokemon.getTypes().add(Type.ACERO);
+        this.pokemon.getTypes().add(Type.Acero.name());
     }
 
     @Test

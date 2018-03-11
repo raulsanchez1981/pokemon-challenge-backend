@@ -1,6 +1,5 @@
 package challenge.entities;
 
-import challenge.enums.Type;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -25,7 +24,7 @@ public class Pokemon {
     @NotNull(message = "The 'Description' must be filled")
     private String description;
 
-    private List<Type> types;
+    private List<String> types;
     private String image;
     private boolean favourite;
     private String evolution;
@@ -54,11 +53,11 @@ public class Pokemon {
         this.description = description;
     }
 
-    public List<Type> getTypes() {
+    public List<String> getTypes() {
         return types;
     }
 
-    public void setTypes(List<Type> types) {
+    public void setTypes(List<String> types) {
         this.types = types;
     }
 

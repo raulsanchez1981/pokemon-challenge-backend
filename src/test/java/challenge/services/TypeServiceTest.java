@@ -23,7 +23,7 @@ public class TypeServiceTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        this.enumList = Stream.of(Type.values()).map(Type::getValue).collect(Collectors.toList());
+        this.enumList = Stream.of(Type.values()).map(Type::name).collect(Collectors.toList());
 
     }
 

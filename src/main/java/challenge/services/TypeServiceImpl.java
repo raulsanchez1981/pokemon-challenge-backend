@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @EnableConfigurationProperties
@@ -24,7 +24,7 @@ public class TypeServiceImpl implements TypeService {
     @Override
     public List<String> obtainAllTypes() {
         try {
-            return Stream.of(Type.values()).map(Type::getValue).collect(Collectors.toList());
+            return Arrays.stream(Type.values()).map(Enum::name).collect(Collectors.toList());
         } catch (Exception e) {
             throw new ChallengeServiceException(errorMessages.getProperty(ErrorCodes.FIND_TYPES_ERROR));
         }

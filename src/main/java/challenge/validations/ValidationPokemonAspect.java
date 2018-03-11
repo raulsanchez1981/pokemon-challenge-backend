@@ -1,10 +1,13 @@
 package challenge.validations;
 
 import challenge.entities.Pokemon;
+import challenge.enums.Type;
 import challenge.exception.types.ValidationDataException;
+import challenge.search.PokemonSearch;
 import challenge.services.PokemonService;
 import challenge.utils.ErrorCodes;
 import challenge.utils.ErrorMessages;
+import org.apache.commons.lang3.EnumUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -38,16 +41,33 @@ public class ValidationPokemonAspect {
         checkNamePokemon(pokemon.getName(), errorList);
         checkDescriptionPokemon(pokemon, errorList);
         checkPokemonTypes(pokemon, errorList);
+        checkPokemonEvolution(pokemon, errorList);
         if (!errorList.isEmpty()) {
             throw new ValidationDataException(errorList.toString());
         }
         return joinPoint.proceed();
     }
 
+    private void checkPokemonEvolution(Pokemon pokemon, List<String> errorList) {
+        if (null != pokemon.getEvolution()){
+            PokemonSearch pokemonSearch = new PokemonSearch();
+            pokemonSearch.setName(pokemon.getEvolution());
+            List<Pokemon> pokemonList = this.pokemonService.findPokemons(pokemonSearch);
+            if (pokemonList.isEmpty() || pokemonList.stream().noneMatch(item -> pokemon.getEvolution().equals(item.getName()))) {
+                errorList.add(errorMessages.getProperty(ErrorCodes.EVOLUTION_EXIST));
+            }
+
+        }
+    }
 
     private void checkPokemonTypes(Pokemon pokemon, List<String> errorList) {
         if (pokemon.getTypes().size() > 3 || pokemon.getTypes().isEmpty()) {
             errorList.add(errorMessages.getProperty(ErrorCodes.TYPES_NUMBER));
+        }
+        if (!pokemon.getTypes().isEmpty()){
+            if (!pokemon.getTypes().stream().allMatch(item ->EnumUtils.isValidEnum(Type.class, item))) {
+                errorList.add(errorMessages.getProperty(ErrorCodes.TYPES_ENUM));
+            }
         }
     }
 

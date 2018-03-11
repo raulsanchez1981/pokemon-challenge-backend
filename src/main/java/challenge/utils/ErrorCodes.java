@@ -17,6 +17,8 @@ public final class ErrorCodes {
     public static final String DESCRIPTION_LENGTH = "descriptionlength";
     public static final String NAME_ONE_WORD = "nameword";
     public static final String TYPES_NUMBER = "typesnumber";
+    public static final String TYPES_ENUM = "typesenum";
+    public static final String EVOLUTION_EXIST = "evolutionexist";
 
 
 }
