@@ -1,9 +1,7 @@
 package challenge.exception.handler;
 
-import challenge.exception.types.ChallengeControlAcessException;
 import challenge.exception.types.ChallengeControllerException;
 import challenge.exception.types.ValidationDataException;
-import challenge.validations.ValidationPokemon;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -94,7 +92,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 
     //
 
-    @ExceptionHandler({ MethodArgumentTypeMismatchException.class })
+    @ExceptionHandler({MethodArgumentTypeMismatchException.class})
     public ResponseEntity<Object> handleMethodArgumentTypeMismatch(final MethodArgumentTypeMismatchException ex, final WebRequest request) {
         logger.info(ex.getClass().getName());
         //
@@ -104,7 +102,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
-    @ExceptionHandler({ ConstraintViolationException.class })
+    @ExceptionHandler({ConstraintViolationException.class})
     public ResponseEntity<Object> handleConstraintViolation(final ConstraintViolationException ex, final WebRequest request) {
         logger.info(ex.getClass().getName());
         //
@@ -162,7 +160,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 
     // 500
 
-    @ExceptionHandler({ Exception.class })
+    @ExceptionHandler({Exception.class})
     public ResponseEntity<Object> handleAll(final Exception ex, final WebRequest request) {
         logger.info(ex.getClass().getName());
         logger.error("error", ex);
@@ -172,7 +170,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
 
-    @ExceptionHandler({ ValidationDataException.class })
+    @ExceptionHandler({ValidationDataException.class})
     public ResponseEntity<Object> handleValidationAcessException(final ValidationDataException ex, final WebRequest request) {
         logger.info(ex.getClass().getName());
         logger.error("error", ex);
@@ -182,7 +180,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
 
-    @ExceptionHandler({ ChallengeControllerException.class })
+    @ExceptionHandler({ChallengeControllerException.class})
     public ResponseEntity<Object> handleChallengeControllerException(final ChallengeControllerException ex, final WebRequest request) {
         logger.info(ex.getClass().getName());
         logger.error("error", ex);

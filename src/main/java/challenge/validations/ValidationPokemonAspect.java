@@ -1,8 +1,6 @@
 package challenge.validations;
 
 import challenge.entities.Pokemon;
-import challenge.exception.types.ChallengeControlAcessException;
-import challenge.exception.types.ChallengeServiceException;
 import challenge.exception.types.ValidationDataException;
 import challenge.services.PokemonService;
 import challenge.utils.ErrorCodes;

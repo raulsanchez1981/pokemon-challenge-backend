@@ -100,4 +100,31 @@ public class PokemonControllerTest {
         Mockito.doThrow(new ChallengeServiceException("error", new Throwable())).when(pokemonService).deletePokemon("");
         pokemonController.deletePokemon("");
     }
+
+    @Test
+    public void testMakeFavouritePokemon() {
+        Mockito.when(pokemonService.makePokemonFavourite("")).thenReturn(this.pokemon);
+        Pokemon pokemonFav = pokemonController.makePokemonFavourite("");
+        Assert.assertEquals(pokemonFav, this.pokemon);
+    }
+
+    @Test(expected = ChallengeControllerException.class)
+    public void testMakeFavouritePokemonException() {
+        Mockito.when(this.pokemonService.makePokemonFavourite("")).thenThrow(new ChallengeServiceException("error", new Throwable()));
+        this.pokemonController.makePokemonFavourite("");
+    }
+
+
+    @Test
+    public void testUnmakeFavouritePokemon() {
+        Mockito.when(pokemonService.unMakePokemonFavourite("")).thenReturn(this.pokemon);
+        Pokemon pokemonFav = pokemonController.unMakePokemonFavourite("");
+        Assert.assertEquals(pokemonFav, this.pokemon);
+    }
+
+    @Test(expected = ChallengeControllerException.class)
+    public void testUnmakeFavouritePokemonException() {
+        Mockito.when(this.pokemonService.unMakePokemonFavourite("")).thenThrow(new ChallengeServiceException("error", new Throwable()));
+        this.pokemonController.unMakePokemonFavourite("");
+    }
 }

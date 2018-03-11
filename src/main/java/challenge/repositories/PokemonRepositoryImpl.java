@@ -1,12 +1,10 @@
 package challenge.repositories;
 
 import challenge.entities.Pokemon;
-import challenge.exception.types.ChallengeControlAcessException;
+import challenge.exception.types.ChallengeServiceException;
 import challenge.search.PokemonSearch;
 import challenge.utils.ErrorCodes;
 import challenge.utils.ErrorMessages;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -15,8 +13,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.MongoRegexCreator;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.data.repository.query.parser.Part;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -44,7 +40,7 @@ public class PokemonRepositoryImpl implements CustomPokemonRepository {
             List<Pokemon> list = this.mongoTemplate.find(query, Pokemon.class);
             return list;
         } catch (Exception e) {
-            throw new ChallengeControlAcessException(errorMessages.getProperty(ErrorCodes.FIND_POKEMON_ERROR));
+            throw new ChallengeServiceException(errorMessages.getProperty(ErrorCodes.FIND_POKEMON_ERROR));
 
         }
     }
@@ -53,7 +49,7 @@ public class PokemonRepositoryImpl implements CustomPokemonRepository {
     public void updatePokemon(Pokemon pokemon) {
         Document pokemonDocument = (Document) mongoTemplate.getConverter().convertToMongoType(pokemon);
         Update setUpdate = Update.fromDocument(new Document("$set", pokemonDocument));
-        mongoTemplate.updateFirst(new Query(Criteria.where("_id").is(pokemon.getId())), setUpdate , Pokemon.class);
+        mongoTemplate.updateFirst(new Query(Criteria.where("_id").is(pokemon.getId())), setUpdate, Pokemon.class);
     }
 
 
