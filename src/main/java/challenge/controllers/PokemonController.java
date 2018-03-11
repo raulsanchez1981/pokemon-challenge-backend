@@ -171,7 +171,7 @@ public class PokemonController {
 
     private void buildErrorMessages(BindingResult bindingResult) {
         final StringBuilder builder = new StringBuilder();
-        if (bindingResult.hasErrors()) {
+        if (null != bindingResult && bindingResult.hasErrors()) {
             bindingResult.getAllErrors().stream().forEach(item -> {
                 builder.append(item.getDefaultMessage());
                 builder.append(" <br> ");

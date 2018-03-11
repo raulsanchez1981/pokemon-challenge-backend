@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @CompoundIndexes({
@@ -83,5 +84,9 @@ public class Pokemon {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Pokemon() {
+        this.types = new ArrayList<>();
     }
 }

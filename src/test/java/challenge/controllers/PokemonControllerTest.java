@@ -1,6 +1,7 @@
 package challenge.controllers;
 
 import challenge.entities.Pokemon;
+import challenge.enums.Type;
 import challenge.exception.types.ChallengeControllerException;
 import challenge.exception.types.ChallengeServiceException;
 import challenge.search.PokemonSearch;
@@ -35,8 +36,16 @@ public class PokemonControllerTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         this.emptyList = new ArrayList<>();
-        this.pokemon = new Pokemon();
+        fillPokemon();
         this.pokemonSearch = new PokemonSearch();
+    }
+
+    private void fillPokemon() {
+        this.pokemon = new Pokemon();
+        this.pokemon.setId("sfdsfdsfdsfdfds");
+        this.pokemon.setName("Named");
+        this.pokemon.setDescription("lkfdlksjfkljsdflkjsldkfjalksdjflkjdlñkjasdklfjlñkjsdflkjasflkajdfklfja");
+        this.pokemon.getTypes().add(Type.ACERO);
     }
 
     @Test
@@ -51,7 +60,6 @@ public class PokemonControllerTest {
         Mockito.when(this.pokemonService.findPokemons(pokemonSearch)).thenThrow(new ChallengeServiceException("error", new Throwable()));
         this.pokemonController.findPokemons(pokemonSearch);
     }
-
 
     @Test
     public void testCreatePokemon() {
