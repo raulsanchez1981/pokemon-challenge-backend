@@ -5,11 +5,12 @@ The challenge is to create a REST API for managing Pokemons.
 
 Tools and Frameworks I used:
 
-Spring Boot 2.0
-Spring Data MongoDB
-Swagger UI
-Cucumber for Functional Test
-Junit and Mockito for Unitary Test
+- Spring Boot 2.0
+- Spring Data MongoDB
+- Swagger UI
+- Cucumber for Functional Test
+- Junit and Mockito for Unitary Test
+
 All the code are in GitHub and exist an image of this in DockerHub.
 
 The project is structured in:
@@ -41,21 +42,22 @@ way how it works.
 
 The different url:
 
-GitHub:
+- GitHub:
 
 https://github.com/raulsanchez1981/pokemon-challenge-backend
 
-DockerHub:
+- DockerHub:
 
 https://hub.docker.com/r/raulsanchez1981/pokemon-challenge/
 
-For enter in the application in local with a small presentation's page:
+- For enter in the application in local with a small presentation's page:
 
 http://localhost:8080/challenge/index.html
 
-This application is deployed in Heroku too:
+- This application is deployed in Heroku too:
 
 https://pokemon-challenge.herokuapp.com/challenge/index.html
+
 
 For any doubts, my mail is: 
 
