@@ -11,6 +11,7 @@ public final class ErrorCodes {
     public static final String DELETE_ERROR = "deletepokemon";
     public static final String FIND_POKEMON_ERROR = "findpokemon";
     public static final String FIND_TYPES_ERROR = "findtypes";
+    public static final String MAX_FAVOURITE = "maxfavourite";
 
 
 }

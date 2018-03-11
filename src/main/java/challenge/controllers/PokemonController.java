@@ -126,4 +126,42 @@ public class PokemonController {
         }
     }
 
+    @ApiOperation(value = "Make Fvourite a Pokemon from the Collection",
+            notes = "The following validations are applied:"
+                    + "\n"
+                    + "\n- **Id** must be filled<br>")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Ok"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Internal Server Error")})
+    @RequestMapping(method = RequestMethod.PUT, value = "/favourite/{id}")
+    public Pokemon makePokemonFavourite(@PathVariable String id) {
+        try {
+            return this.pokemonService.makePokemonFavourite(id);
+        } catch (ChallengeServiceException e) {
+            throw new ChallengeControllerException(e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "Unmake Fvourite a Pokemon from the Collection",
+            notes = "The following validations are applied:"
+                    + "\n"
+                    + "\n- **Id** must be filled<br>")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Ok"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Internal Server Error")})
+    @RequestMapping(method = RequestMethod.PUT, value = "/favourite/{id}")
+    public Pokemon unMakePokemonFavourite(@PathVariable String id) {
+        try {
+            return this.pokemonService.unMakePokemonFavourite(id);
+        } catch (ChallengeServiceException e) {
+            throw new ChallengeControllerException(e.getMessage());
+        }
+    }
+
 }

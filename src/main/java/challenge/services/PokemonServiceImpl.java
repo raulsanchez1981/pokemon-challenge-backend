@@ -66,11 +66,41 @@ public class PokemonServiceImpl implements PokemonService {
     }
 
     @Override
+    public Pokemon makePokemonFavourite(String id) {
+        try {
+            if (getFavouriteNumber() < 10) {
+                Pokemon pokemon = this.findPokemonById(id);
+                pokemon.setFavourite(true);
+                this.pokemonRepository.updatePokemon(pokemon);
+                return pokemon;
+            }
+            throw new ChallengeServiceException(errorMessages.getProperty(ErrorCodes.MAX_FAVOURITE));
+        } catch (ChallengeServiceException e) {
+            throw new ChallengeServiceException(errorMessages.getProperty(ErrorCodes.UPDATE_ERROR));
+        }
+    }
+
+    private int getFavouriteNumber() {
+        PokemonSearch pokemonSearch = new PokemonSearch();
+        pokemonSearch.setFavourite(true);
+        return this.pokemonRepository.findPokemonsBySearchFilter(pokemonSearch).size();
+    }
+
+    @Override
+    public Pokemon unMakePokemonFavourite(String id) {
+        try {
+            Pokemon pokemon = this.findPokemonById(id);
+            pokemon.setFavourite(false);
+            this.pokemonRepository.updatePokemon(pokemon);
+            return pokemon;
+        } catch (Exception e) {
+            throw new ChallengeServiceException(errorMessages.getProperty(ErrorCodes.UPDATE_ERROR));
+        }
+    }
+
+    @Override
     public void deletePokemon(String id) {
         Pokemon pokemon = this.findPokemonById(id);
-//        if (null == pokemon) {
-//            throw new ChallengeServiceException(errorMessages.getProperty(ErrorCodes.POKEMON_NOT_FOUND));
-//        }
         try {
             this.pokemonRepository.delete(pokemon);
         } catch (Exception e) {

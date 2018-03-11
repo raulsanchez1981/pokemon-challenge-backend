@@ -12,5 +12,7 @@ public interface PokemonService {
     List<Pokemon> findPokemons(PokemonSearch pokemonSearch);
     Pokemon savePokemon(Pokemon pokemon);
     Pokemon updatePokemon(Pokemon pokemon);
+    Pokemon makePokemonFavourite(String id);
+    Pokemon unMakePokemonFavourite(String id);
     void deletePokemon(String id);
 }
