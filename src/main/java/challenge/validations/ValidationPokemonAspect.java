@@ -50,7 +50,7 @@ public class ValidationPokemonAspect {
     }
 
     private void checkPokemonEvolution(Pokemon pokemon, List<String> errorList) {
-        if (null != pokemon.getEvolution()){
+        if (null != pokemon.getEvolution() && !"".equals(pokemon.getEvolution())){
             if (pokemon.getEvolution().equalsIgnoreCase(pokemon.getName())) {
                 errorList.add(errorMessages.getProperty(ErrorCodes.EVOLUTION_SAME));
             }
