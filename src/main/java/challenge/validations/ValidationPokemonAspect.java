@@ -42,6 +42,7 @@ public class ValidationPokemonAspect {
         checkDescriptionPokemon(pokemon, errorList);
         checkPokemonTypes(pokemon, errorList);
         checkPokemonEvolution(pokemon, errorList);
+        checkFavoritePokemons(pokemon, errorList);
         if (!errorList.isEmpty()) {
             throw new ValidationDataException(errorList.toString());
         }
@@ -50,6 +51,9 @@ public class ValidationPokemonAspect {
 
     private void checkPokemonEvolution(Pokemon pokemon, List<String> errorList) {
         if (null != pokemon.getEvolution()){
+            if (pokemon.getEvolution().equalsIgnoreCase(pokemon.getName())) {
+                errorList.add(errorMessages.getProperty(ErrorCodes.EVOLUTION_SAME));
+            }
             PokemonSearch pokemonSearch = new PokemonSearch();
             pokemonSearch.setName(pokemon.getEvolution());
             List<Pokemon> pokemonList = this.pokemonService.findPokemons(pokemonSearch);
@@ -61,7 +65,7 @@ public class ValidationPokemonAspect {
     }
 
     private void checkPokemonTypes(Pokemon pokemon, List<String> errorList) {
-        if (pokemon.getTypes().size() > 3 || pokemon.getTypes().isEmpty()) {
+        if (pokemon.getTypes().size() > 2 || pokemon.getTypes().isEmpty()) {
             errorList.add(errorMessages.getProperty(ErrorCodes.TYPES_NUMBER));
         }
         if (!pokemon.getTypes().isEmpty()){
@@ -83,6 +87,17 @@ public class ValidationPokemonAspect {
         }
         if (name.length() < 4 || name.length() > 24) {
             errorList.add(errorMessages.getProperty(ErrorCodes.NAME_LENGTH));
+        }
+    }
+
+    private void checkFavoritePokemons(Pokemon pokemon, List<String> errorList) {
+        if (pokemon.isFavourite()) {
+            PokemonSearch filter = new PokemonSearch();
+            filter.setFavourite(true);
+            List<Pokemon> pokemonList = this.pokemonService.findPokemons(filter);
+            if (pokemonList.size() > 9 && pokemonList.stream().noneMatch(item -> item.getName().equalsIgnoreCase(pokemon.getName()))) {
+                errorList.add(errorMessages.getProperty(ErrorCodes.MAX_FAVOURITE));
+            }
         }
     }
 }

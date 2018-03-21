@@ -19,6 +19,7 @@ public final class ErrorCodes {
     public static final String TYPES_NUMBER = "typesnumber";
     public static final String TYPES_ENUM = "typesenum";
     public static final String EVOLUTION_EXIST = "evolutionexist";
+    public static final String EVOLUTION_SAME = "evolutionsame";
 
 
 }
